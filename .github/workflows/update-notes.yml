@@ -41,11 +41,11 @@ jobs:
             NOTES="- Corrections et améliorations générales."
           fi
 
-          {
-            echo "notes<<EOF"
-            echo "$NOTES"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          NOTES_ESCAPED="${NOTES//'%'/'%25'}"
+          NOTES_ESCAPED="${NOTES_ESCAPED//$'\n'/'%0A'}"
+          NOTES_ESCAPED="${NOTES_ESCAPED//$'\r'/'%0D'}"
+
+          echo "notes=$NOTES_ESCAPED" >> "$GITHUB_OUTPUT"
 
       - name: Mettre à jour appcast.xml
         run: |
