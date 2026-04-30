@@ -1,12 +1,92 @@
-name: Test Workflow
+name: Préparer une mise à jour Sparkle
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (ex: 1.3)"
+        required: true
+      build:
+        description: "Build (ex: 4)"
+        required: true
+      zip_url:
+        description: "Lien RAW du ZIP"
+        required: true
+
+permissions:
+  contents: write
 
 jobs:
   update-appcast:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test
-        run: echo "Workflow OK"
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Générer résumé automatique
+        id: notes
+        run: |
+          LAST_APPCAST_COMMIT=$(git log -n 1 --format=%H -- appcast.xml || true)
+
+          if [ -n "$LAST_APPCAST_COMMIT" ]; then
+            NOTES=$(git log --pretty=format:'- %s' "$LAST_APPCAST_COMMIT"..HEAD | head -n 6)
+          else
+            NOTES=$(git log --pretty=format:'- %s' -n 6)
+          fi
+
+          if [ -z "$NOTES" ]; then
+            NOTES="- Corrections et améliorations générales."
+          fi
+
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Mettre à jour appcast.xml
+        run: |
+          VERSION="${{ inputs.version }}"
+          BUILD="${{ inputs.build }}"
+          ZIP_URL="${{ inputs.zip_url }}"
+          NOTES="${{ steps.notes.outputs.notes }}"
+
+          DESCRIPTION=$(printf '%s\n' "$NOTES" | sed ':a;N;$!ba;s/\n/<br\/>/g')
+
+          cat <<EOF > appcast.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+<channel>
+<title>Feuille d'heure updates</title>
+
+<item>
+<title>Version ${VERSION}</title>
+
+<description><![CDATA[
+<h2>Changements</h2>
+<p>${DESCRIPTION}</p>
+]]></description>
+
+<enclosure
+url="${ZIP_URL}"
+sparkle:version="${BUILD}"
+sparkle:shortVersionString="${VERSION}"
+length="0"
+type="application/octet-stream"/>
+</item>
+
+</channel>
+</rss>
+EOF
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add appcast.xml
+          git commit -m "Update appcast v${{ inputs.version }}" || echo "No changes"
+          git push
