@@ -41,7 +41,11 @@ jobs:
             NOTES="- Corrections et améliorations générales."
           fi
 
-          echo "notes=$NOTES" >> $GITHUB_OUTPUT
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Mettre à jour appcast.xml
         run: |
@@ -50,7 +54,7 @@ jobs:
           ZIP_URL="${{ inputs.zip_url }}"
           NOTES="${{ steps.notes.outputs.notes }}"
 
-          DESCRIPTION=$(printf '%s\n' "$NOTES" | sed 's/\n/<br\/>/g')
+          DESCRIPTION=$(printf '%s\n' "$NOTES" | sed ':a;N;$!ba;s/\n/<br\/>/g')
 
           cat > appcast.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
