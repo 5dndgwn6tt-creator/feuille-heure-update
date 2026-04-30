@@ -1,26 +1,12 @@
-name: Préparer une mise à jour Sparkle
+name: Test Workflow
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Version"
-        required: true
-      build:
-        description: "Build"
-        required: true
-      zip_url:
-        description: "Lien ZIP"
-        required: true
 
 jobs:
   update-appcast:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test simple
-        run: |
-          echo "OK WORKFLOW"
+      - name: Test
+        run: echo "Workflow OK"
