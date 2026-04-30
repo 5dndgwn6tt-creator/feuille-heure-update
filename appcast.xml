@@ -8,7 +8,13 @@
 <h2>Changements</h2>
 <p>- Update app zip v1.2%0A- Feuille d'heure.zip</p>
 ]]></description>
-<enclosure url="https://raw.githubusercontent.com/5dndgwn6tt-creator/feuille-heure-update/main/Feuille%20d'heure.zip" sparkle:version="3" sparkle:shortVersionString="1.2" length="0" type="application/octet-stream"/>
+<enclosure 
+    url="https://raw.githubusercontent.com/5dndgwn6tt-creator/feuille-heure-update/main/Feuille%20d'heure.zip"
+    sparkle:version="3"
+    sparkle:shortVersionString="1.4"
+    length="0"
+    type="application/octet-stream"/>
+  sparkle:version="3" sparkle:shortVersionString="1.2" length="0" type="application/octet-stream"/>
 </item>
 </channel>
 </rss>
