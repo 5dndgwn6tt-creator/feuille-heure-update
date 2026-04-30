@@ -56,6 +56,32 @@ jobs:
 
           DESCRIPTION=$(printf '%s\n' "$NOTES" | sed ':a;N;$!ba;s/\n/<br\/>/g')
 
+          echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > appcast.xml
+          echo "<rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\">" >> appcast.xml
+          echo "<channel>" >> appcast.xml
+          echo "<title>Feuille d'heure updates</title>" >> appcast.xml
+
+          echo "<item>" >> appcast.xml
+          echo "<title>Version ${VERSION}</title>" >> appcast.xml
+
+          echo "<description><![CDATA[" >> appcast.xml
+          echo "<h2>Changements</h2>" >> appcast.xml
+          echo "<p>${DESCRIPTION}</p>" >> appcast.xml
+          echo "]]></description>" >> appcast.xml
+
+          echo "<enclosure url=\"${ZIP_URL}\" sparkle:version=\"${BUILD}\" sparkle:shortVersionString=\"${VERSION}\" length=\"0\" type=\"application/octet-stream\"/>" >> appcast.xml
+
+          echo "</item>" >> appcast.xml
+          echo "</channel>" >> appcast.xml
+          echo "</rss>" >> appcast.xml
+          run: |
+          VERSION="${{ inputs.version }}"
+          BUILD="${{ inputs.build }}"
+          ZIP_URL="${{ inputs.zip_url }}"
+          NOTES="${{ steps.notes.outputs.notes }}"
+
+          DESCRIPTION=$(printf '%s\n' "$NOTES" | sed ':a;N;$!ba;s/\n/<br\/>/g')
+
           cat <<EOF > appcast.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
