@@ -1,5 +1,5 @@
-<?xml version="0.1" encoding="UTF-8"?>
-<rss version="0.1"
+<?xml version="2.0" encoding="UTF-8"?>
+<rss version="1.0"
      xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
 <channel>
     <title>Feuille d'heure updates</title>
@@ -9,8 +9,8 @@
 
         <enclosure
             url="https://raw.githubusercontent.com/5dndgwn6tt-creator/feuille-heure-update/main/Feuille%20d%27heure.zip"
-            sparkle:version="1"
-            sparkle:shortVersionString="1.0"
+            sparkle:version="2"
+            sparkle:shortVersionString="1.1"
             length="0"
             type="application/octet-stream"/>
     </item>
