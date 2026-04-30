@@ -3,12 +3,12 @@
 <channel>
 <title>Feuille d'heure updates</title>
 <item>
-<title>Version 1</title>
+<title>Version 1.2</title>
 <description><![CDATA[
 <h2>Changements</h2>
-<p>- Escape special characters in NOTES for output%0A- Remove XML generation for appcast.xml%0A- Enhance appcast.xml generation in workflow</p>
+<p>- Update app zip v1.2%0A- Feuille d'heure.zip</p>
 ]]></description>
-<enclosure url="https://github.com/TON_REPO/releases/download/v1.0/Feuille%20d'heure.zip" sparkle:version="1" sparkle:shortVersionString="1" length="0" type="application/octet-stream"/>
+<enclosure url="https://raw.githubusercontent.com/5dndgwn6tt-creator/feuille-heure-update/main/Feuille%20d'heure.zip" sparkle:version="3" sparkle:shortVersionString="1.2" length="0" type="application/octet-stream"/>
 </item>
 </channel>
 </rss>
