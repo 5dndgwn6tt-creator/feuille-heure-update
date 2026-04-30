@@ -74,40 +74,6 @@ jobs:
           echo "</item>" >> appcast.xml
           echo "</channel>" >> appcast.xml
           echo "</rss>" >> appcast.xml
-          run: |
-          VERSION="${{ inputs.version }}"
-          BUILD="${{ inputs.build }}"
-          ZIP_URL="${{ inputs.zip_url }}"
-          NOTES="${{ steps.notes.outputs.notes }}"
-
-          DESCRIPTION=$(printf '%s\n' "$NOTES" | sed ':a;N;$!ba;s/\n/<br\/>/g')
-
-          cat <<EOF > appcast.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"
-xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
-<channel>
-<title>Feuille d'heure updates</title>
-
-<item>
-<title>Version ${VERSION}</title>
-
-<description><![CDATA[
-<h2>Changements</h2>
-<p>${DESCRIPTION}</p>
-]]></description>
-
-<enclosure
-url="${ZIP_URL}"
-sparkle:version="${BUILD}"
-sparkle:shortVersionString="${VERSION}"
-length="0"
-type="application/octet-stream"/>
-</item>
-
-</channel>
-</rss>
-EOF
 
       - name: Commit
         run: |
